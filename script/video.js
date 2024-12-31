@@ -6,6 +6,16 @@ function getTimeString(time){
   remainingSecond = remainingSecond % 60
   return `${hour} hour ${minite} minite ${remainingSecond} second ago`
 }
+
+// REMOVE ACTIVE CLASS 
+const removeActiveClass= ()=>{
+  const buttons = document.getElementsByClassName('category-btn')
+  console.log(buttons)
+  for(let btn of buttons){
+    btn.classList.remove("active")
+  }
+}
+
 //  1. fecth load and show catagories on html
 // create function load categories
 const loadCategories = () => {
@@ -22,7 +32,15 @@ const loadCategoriesVideos=(id)=>{
   // fecth data
   fetch(`https://openapi.programming-hero.com/api/phero-tube/category/${id}`)
     .then((res) => res.json())
-    .then((data) => displayVideos(data.category))
+    .then((data) => {
+    // sobar active class remove korabo
+    removeActiveClass()
+    // sudur id class k active rakte bolbo
+      const activeBtn = document.getElementById(`btn-${id}`)
+      activeBtn.classList.add("active")
+      displayVideos(data.category)
+
+    })
     .catch((error) => console.log("kutaw bul korco", error));
 }
 
@@ -83,6 +101,7 @@ const displayVideos = (videos) => {
         }
       </div>
       <p>${video.others.views}</p>
+      <button onclick="loadDetails('${video.video_id}')" class="btn btn-sm btn-error text-white">Details </button>
       
     </div>
     
@@ -102,7 +121,7 @@ const displayCategories = (categories) => {
     // button.innerText = item.category;
     const buttonContainer = document.createElement("div");
     buttonContainer.innerHTML =`
-    <button onclick="loadCategoriesVideos(${item.category_id})" class='btn'>${item.category}  </button>
+    <button id="btn-${item.category_id}" onclick="loadCategoriesVideos(${item.category_id})" class='btn category-btn'>${item.category}  </button>
     `
     
   
@@ -110,6 +129,23 @@ const displayCategories = (categories) => {
     categoriesContainer.appendChild(buttonContainer);
   });
 };
+// LOAD DISPLAY DETAILS 
+const loadDetails=async(videoId)=>{
+ const url =  `https://openapi.programming-hero.com/api/phero-tube/video/${videoId}`
+ const res =await fetch(url)
+ const data = await res.json()
+ displayDetails(data.video)
+}
+// Display Details
+const displayDetails = (video)=>{
+  console.log(video)
+  const detailsContainer = document.getElementById('modal-content')
+
+  // way-1 
+  document.getElementById('showModalData').click() 
+  //way-2
+  // document.getElementById("customModal").showModal()
+}
 
 loadCategories();
 loadVideos();
