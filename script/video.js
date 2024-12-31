@@ -39,6 +39,22 @@ const loadVideos = () => {
 const displayVideos = (videos) => {
   const videosContainer = document.getElementById("videos-container");
   videosContainer.innerHTML=" "
+  if(videos.length == 0){
+    videosContainer.classList.remove("grid")
+    videosContainer.innerHTML = `
+     <div class="min-h-28 flex flex-col justify-center items-center ">
+       <img  src="assets/Icon.png" />
+       <h2 class="text-xl font-bold ">
+       No Content Here in this Categories
+       </h2>
+     </div>
+    `
+    return;
+
+  }
+  else{
+    videosContainer.classList.add("grid")
+  }
   videos.forEach((video) => {
     console.log(video);
     const card = document.createElement("div");
