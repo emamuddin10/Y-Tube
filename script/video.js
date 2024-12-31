@@ -140,6 +140,10 @@ const loadDetails=async(videoId)=>{
 const displayDetails = (video)=>{
   console.log(video)
   const detailsContainer = document.getElementById('modal-content')
+  detailsContainer.innerHTML=`
+  <img src=${video.thumbnail}/>
+  <p> ${video.description} </P>
+  `
 
   // way-1 
   document.getElementById('showModalData').click() 
