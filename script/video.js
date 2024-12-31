@@ -45,9 +45,9 @@ const loadCategoriesVideos=(id)=>{
 }
 
 // load videos
-const loadVideos = () => {
+const loadVideos = (searchText ="") => {
   // fecth data
-  fetch("https://openapi.programming-hero.com/api/phero-tube/videos")
+  fetch(`https://openapi.programming-hero.com/api/phero-tube/videos?title=${searchText}`)
     .then((res) => res.json())
     .then((data) => displayVideos(data.videos))
     .catch((error) => console.log("kutaw bul korco", error));
@@ -150,6 +150,10 @@ const displayDetails = (video)=>{
   //way-2
   // document.getElementById("customModal").showModal()
 }
+
+document.getElementById('search-input').addEventListener('keyup',(event)=>{
+   loadVideos(event.target.value)
+})
 
 loadCategories();
 loadVideos();
